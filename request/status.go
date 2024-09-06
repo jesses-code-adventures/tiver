@@ -63,7 +63,7 @@ func (s Status) String() string {
 	case "error":
 		return "error"
 	default:
-		slog.Error(fmt.Sprintf("invalid Status in s.Status: %v", s))
+		slog.Error(fmt.Sprint("invalid Status in s.Status: ", s))
 		return ""
 	}
 }

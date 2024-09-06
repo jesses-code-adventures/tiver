@@ -1,6 +1,6 @@
 package worker
 
 import (
-	"github.com/riverqueue/river"
-	"github.com/riverqueue/river/riverdriver/riverpgxv5"
+	_ "github.com/riverqueue/river"
+	_ "github.com/riverqueue/river/riverdriver/riverpgxv5"
 )

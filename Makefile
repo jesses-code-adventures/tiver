@@ -8,9 +8,13 @@ ifneq (,$(wildcard ./.env.secret))
     export
 endif
 
-serve:
-	@echo "serving $(APP_NAME) on $(PORT)"
-	go run main.go
+CMD=cmd
+BIN=bin
+
+build:
+	@mkdir -p $(BIN)
+	@go build -o ./$(BIN)/serve ./$(CMD)/serve 
+	@chmod +x ./$(BIN)/serve
 
 db-drop:
 	@echo "Checking if database $(DB_NAME) exists..."
@@ -49,10 +53,13 @@ dump:
 	@echo "TABLES\n"
 	@make db-tables
 
-serve-jq:
-	@go run main.go | jq -c
+fresh-run: db-reset generate build serve-jq
 
 generate:
 	@go generate
 
-fresh-run: db-reset generate serve-jq
+serve:
+	@./$(BIN)/serve
+
+serve-jq:
+	@make serve | jq -c

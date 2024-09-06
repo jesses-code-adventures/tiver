@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
@@ -25,7 +26,7 @@ func NewServer() (s Server) {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)
 	ctx := context.Background()
-	conn, err := pgx.Connect(ctx, "user=jesse dbname=tiver sslmode=disable")
+	conn, err := pgx.Connect(ctx, fmt.Sprintf("user=%s dbname=%s sslmode=%s", os.Getenv("DB_USER"), os.Getenv("DB_NAME"), os.Getenv("SSL_MODE")))
 	if err != nil {
 		return
 	}
