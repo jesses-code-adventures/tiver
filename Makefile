@@ -50,4 +50,7 @@ dump:
 	@echo "TABLES\n"
 	@make db-tables
 
-fresh-run: db-reset serve
+serve-jq:
+	@go run main.go | jq -c
+
+fresh-run: db-reset serve-jq
