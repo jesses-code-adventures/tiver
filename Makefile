@@ -1,16 +1,15 @@
-PORT= 8069
-PROTOCOL=postgresql
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=jesse
-DB_NAME=tiver
-SSL_MODE=disable
-DB_CONNECTION_STRING=$(PROTOCOL)://$(DB_USER)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(SSL_MODE)
-MIGRATIONS_DIR=migrations
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
 
+ifneq (,$(wildcard ./.env.secret))
+    include .env.secret
+    export
+endif
 
 serve:
-	@echo "serving $(APP_NAME) on port $(PORT)"
+	@echo "serving $(APP_NAME) on $(PORT)"
 	go run main.go
 
 db-drop:
