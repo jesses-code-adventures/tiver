@@ -53,4 +53,7 @@ dump:
 serve-jq:
 	@go run main.go | jq -c
 
-fresh-run: db-reset serve-jq
+generate:
+	@go generate
+
+fresh-run: db-reset generate serve-jq
