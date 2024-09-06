@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/jesses-code-adventures/tiver/model"
 )
 
 type Origin string
@@ -27,4 +29,13 @@ func OriginFromString(s string) (o Origin, err error) {
 	default:
 		return o, errors.New(fmt.Sprintf("unacceptable origin value: %s", s))
 	}
+}
+
+func FromDbModel(dbModel model.Origin) (o Origin, err error) {
+	var s string
+	err = dbModel.Scan(&s)
+	if err != nil {
+		return o, err
+	}
+	return OriginFromString(s)
 }

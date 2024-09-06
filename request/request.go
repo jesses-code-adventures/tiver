@@ -30,8 +30,22 @@ type Request struct {
 	Id        uuid.UUID `json:"id"`
 	GameId    uuid.UUID `json:"game_id"`
 	CreatedAt time.Time `json:"created_at"`
-	Origin    Origin    `'json:"origin"`
-	Colour    HexColour `'json:"colour"`
-	Width     int       `'json:"width"`
-	Status    Status    `'json:"status"`
+	Origin    Origin    `json:"origin"`
+	Colour    HexColour `json:"colour"`
+	Speed     int       `json:"speed"`
+	Width     int       `json:"width"`
+	Status    Status    `json:"status"`
+}
+
+func NewRequest(id uuid.UUID, gameId uuid.UUID, createdAt time.Time, origin Origin, colour HexColour, speed int, width int, status Status, requests int) Request {
+	return Request{
+		Id:        id,
+		GameId:    gameId,
+		CreatedAt: createdAt,
+		Origin:    origin,
+		Colour:    colour,
+		Speed:     speed,
+		Width:     width,
+		Status:    status,
+	}
 }

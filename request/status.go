@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+
+	"github.com/jesses-code-adventures/tiver/model"
 )
 
 type Status string
@@ -33,6 +35,23 @@ func StatusFromString(s string) (st Status, err error) {
 	return
 }
 
+func MustStatusFromString(s string) Status {
+	switch s {
+	case "init":
+		return "init"
+	case "retry":
+		return "retry"
+	case "success":
+		return "success"
+	case "error":
+		return "error"
+	default:
+		msg := fmt.Sprintf("invalid string passed to StatusFromString: %s", s)
+		panic(msg)
+	}
+
+}
+
 func (s Status) String() string {
 	switch s {
 	case Init:
@@ -47,4 +66,13 @@ func (s Status) String() string {
 		slog.Error(fmt.Sprintf("invalid Status in s.Status: %v", s))
 		return ""
 	}
+}
+
+func (s Status) StatusFromDbModel(dbModel model.RequestStatus) Status {
+	var str string
+	err := dbModel.Scan(&s)
+	if err != nil {
+		panic("db model failed to scan")
+	}
+	return MustStatusFromString(str)
 }

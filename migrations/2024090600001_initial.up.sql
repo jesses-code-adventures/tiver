@@ -13,7 +13,7 @@ CREATE TABLE request (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'UTC'), 
     ended_at TIMESTAMP WITH TIME ZONE,
-    game_id uuid REFERENCES game(id),
+    game_id uuid NOT NULL REFERENCES game(id),
     colour CHAR(7) NOT NULL,
     origin origin NOT NULL,
     speed INTEGER NOT NULL CHECK (speed >= 1 AND speed <= 10),
