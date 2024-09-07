@@ -3,6 +3,7 @@ package request
 import (
 	"errors"
 	"fmt"
+	"log"
 	"log/slog"
 
 	"github.com/jesses-code-adventures/tiver/model"
@@ -30,6 +31,8 @@ func StatusFromString(s string) (st Status, err error) {
 	default:
 		msg := fmt.Sprintf("invalid string passed to StatusFromString: %s", s)
 		slog.Error(msg)
+		log.Print("hi")
+		log.Print("hi again")
 		return st, errors.New(msg)
 	}
 	return

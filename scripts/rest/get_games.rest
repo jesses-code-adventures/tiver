@@ -1,0 +1,11 @@
+# host
+http://localhost:8069
+
+--silent
+
+-H @scripts/rest/tiver.headers
+
+--
+
+--
+GET /

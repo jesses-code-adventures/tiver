@@ -33,5 +33,9 @@ func (g Game) End() {
 }
 
 func GameFromDbModel(dbModel model.Game) Game {
-	return NewGame(convertUUID(dbModel.ID), dbModel.CreatedAt.Time, &dbModel.EndedAt.Time, dbModel.Requests)
+	return NewGame(convertUUID(dbModel.Id), dbModel.CreatedAt.Time, &dbModel.EndedAt.Time, dbModel.Requests)
 }
+
+// func GameFromRequest(r *http.Request) Game {
+//
+// }

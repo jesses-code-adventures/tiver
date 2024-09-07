@@ -19,7 +19,7 @@ func (q *Queries) CreateGame(ctx context.Context) (Game, error) {
 	row := q.db.QueryRow(ctx, createGame)
 	var i Game
 	err := row.Scan(
-		&i.ID,
+		&i.Id,
 		&i.CreatedAt,
 		&i.EndedAt,
 		&i.Requests,
@@ -51,7 +51,7 @@ func (q *Queries) CreateRequest(ctx context.Context, arg CreateRequestParams) (R
 	)
 	var i Request
 	err := row.Scan(
-		&i.ID,
+		&i.Id,
 		&i.CreatedAt,
 		&i.EndedAt,
 		&i.GameID,
@@ -89,7 +89,7 @@ func (q *Queries) GetActiveGames(ctx context.Context) ([]Game, error) {
 	for rows.Next() {
 		var i Game
 		if err := rows.Scan(
-			&i.ID,
+			&i.Id,
 			&i.CreatedAt,
 			&i.EndedAt,
 			&i.Requests,
@@ -118,7 +118,7 @@ func (q *Queries) GetHangingRequests(ctx context.Context) ([]Game, error) {
 	for rows.Next() {
 		var i Game
 		if err := rows.Scan(
-			&i.ID,
+			&i.Id,
 			&i.CreatedAt,
 			&i.EndedAt,
 			&i.Requests,
@@ -149,12 +149,12 @@ UPDATE game SET ended_at = $2 WHERE id = $1
 `
 
 type UpdateEndGameParams struct {
-	ID      pgtype.UUID
+	Id      pgtype.UUID
 	EndedAt pgtype.Timestamptz
 }
 
 func (q *Queries) UpdateEndGame(ctx context.Context, arg UpdateEndGameParams) error {
-	_, err := q.db.Exec(ctx, updateEndGame, arg.ID, arg.EndedAt)
+	_, err := q.db.Exec(ctx, updateEndGame, arg.Id, arg.EndedAt)
 	return err
 }
 
@@ -163,13 +163,13 @@ UPDATE request SET status = $2, ended_at = $3 WHERE id = $1
 `
 
 type UpdateEndRequestParams struct {
-	ID      pgtype.UUID
+	Id      pgtype.UUID
 	Status  RequestStatus
 	EndedAt pgtype.Timestamptz
 }
 
 func (q *Queries) UpdateEndRequest(ctx context.Context, arg UpdateEndRequestParams) error {
-	_, err := q.db.Exec(ctx, updateEndRequest, arg.ID, arg.Status, arg.EndedAt)
+	_, err := q.db.Exec(ctx, updateEndRequest, arg.Id, arg.Status, arg.EndedAt)
 	return err
 }
 
@@ -178,11 +178,11 @@ UPDATE request SET status = $2 WHERE id = $1
 `
 
 type UpdateRequestStatusParams struct {
-	ID     pgtype.UUID
+	Id     pgtype.UUID
 	Status RequestStatus
 }
 
 func (q *Queries) UpdateRequestStatus(ctx context.Context, arg UpdateRequestStatusParams) error {
-	_, err := q.db.Exec(ctx, updateRequestStatus, arg.ID, arg.Status)
+	_, err := q.db.Exec(ctx, updateRequestStatus, arg.Id, arg.Status)
 	return err
 }

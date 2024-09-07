@@ -8,3 +8,5 @@ sql:
         package: "model"
         out: "model"
         sql_package: "pgx/v5"
+        rename:
+          id: "Id"

@@ -146,14 +146,14 @@ func (ns NullRiverJobState) Value() (driver.Value, error) {
 }
 
 type Game struct {
-	ID        pgtype.UUID
+	Id        pgtype.UUID
 	CreatedAt pgtype.Timestamptz
 	EndedAt   pgtype.Timestamptz
 	Requests  int32
 }
 
 type Request struct {
-	ID        pgtype.UUID
+	Id        pgtype.UUID
 	CreatedAt pgtype.Timestamptz
 	EndedAt   pgtype.Timestamptz
 	GameID    pgtype.UUID
@@ -165,7 +165,7 @@ type Request struct {
 }
 
 type RiverClient struct {
-	ID        string
+	Id        string
 	CreatedAt pgtype.Timestamptz
 	Metadata  []byte
 	PausedAt  pgtype.Timestamptz
@@ -184,7 +184,7 @@ type RiverClientQueue struct {
 }
 
 type RiverJob struct {
-	ID          int64
+	Id          int64
 	State       RiverJobState
 	Attempt     int16
 	MaxAttempts int16
