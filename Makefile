@@ -45,21 +45,22 @@ db-connect:
 db-reset: db-drop db-create db-migrate dump
 	@echo "Database $(DB_NAME) reset successfully."
 
-db-tables:
-	@psql -U $(DB_USER) -d $(DB_NAME) -c "\dt" 
-
 dump:
 	@echo DB_CONNECTION_STRING=$(DB_CONNECTION_STRING)
-	@echo "TABLES\n"
-	@make db-tables
 
-fresh-run: db-reset generate build serve-jq
+fresh-run: db-reset generate build dev-pretty 
 
 generate:
 	@go generate
 
+dev: 
+	@air -c .air.toml
+
+dev-pretty: 
+	@make dev | humanlog -i
+
 serve:
 	@./$(BIN)/serve
 
-serve-jq:
-	@make serve | jq -c
+serve-pretty:
+	@make serve | humanlog -i
