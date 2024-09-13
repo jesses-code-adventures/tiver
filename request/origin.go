@@ -31,11 +31,22 @@ func OriginFromString(s string) (o Origin, err error) {
 	}
 }
 
-func FromDbModel(dbModel model.Origin) (o Origin, err error) {
+func OriginFromDbModel(dbModel model.Origin) (o Origin, err error) {
 	var s string
 	err = dbModel.Scan(&s)
 	if err != nil {
 		return o, err
 	}
 	return OriginFromString(s)
+}
+
+func (o Origin) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`"%s"`, o)), nil
+}
+
+func (o *Origin) UnmarshalJSON(data []byte) error {
+	s := strings.Trim(string(data), `"`)
+	var err error
+	*o, err = OriginFromString(s)
+	return err
 }

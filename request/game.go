@@ -1,6 +1,10 @@
 package request
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -27,15 +31,20 @@ func NewGame(id uuid.UUID, createdAt time.Time, endedAt *time.Time, requests int
 	return Game{Id: id, CreatedAt: createdAt, EndedAt: endedAt, Requests: requests}
 }
 
-func (g Game) End() {
-	now := time.Now()
-	g.EndedAt = &now
-}
-
 func GameFromDbModel(dbModel model.Game) Game {
 	return NewGame(convertUUID(dbModel.Id), dbModel.CreatedAt.Time, &dbModel.EndedAt.Time, dbModel.Requests)
 }
 
-// func GameFromRequest(r *http.Request) Game {
-//
-// }
+func GameFromResponse(r *http.Response) (g Game, error error) {
+	bodyBytes, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("got error reading body")
+		return
+	}
+	defer r.Body.Close()
+	err = json.Unmarshal(bodyBytes, &g)
+	if err != nil {
+		return
+	}
+	return
+}

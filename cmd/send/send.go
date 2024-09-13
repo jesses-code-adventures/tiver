@@ -4,12 +4,12 @@ import (
 	"log"
 
 	"github.com/jesses-code-adventures/tiver/env"
-	"github.com/jesses-code-adventures/tiver/server"
+	"github.com/jesses-code-adventures/tiver/sender"
 )
 
 func run() (err error) {
-	s := server.NewServer()
-	err = s.ListenAndServe()
+	s := sender.NewHttpSender()
+	s.SendRequests()
 	return
 }
 

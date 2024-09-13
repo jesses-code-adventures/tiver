@@ -1,19 +1,20 @@
 root = "."
-testdata_dir = "testdata"
+testdata_dir = "testdata-sender"
 tmp_dir = "bin"
 
 [build]
   args_bin = []
-  bin = "bin/serve"
-  cmd = "go build -o bin/serve cmd/serve/serve.go"
+  bin = "bin/send"
+  cmd = "go build -o bin/send cmd/send/send.go"
   delay = 1000
-  exclude_dir = ["assets", "tmp", "vendor", "testdata", "testdata-sender"]
+  # exclude_dir = ["assets", "tmp", "vendor", "testdata", "testdata-sender"]
+  exclude_dir = []
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
   follow_symlink = false
   full_bin = ""
-  include_dir = []
+  include_dir = ["sender"]
   include_ext = ["go"]
   include_file = []
   kill_delay = "0s"

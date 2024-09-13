@@ -36,7 +36,7 @@ db-create:
 db-migrate:
 	@echo "Migrating database $(DB_NAME) with files from $(MIGRATIONS_DIR)..."$(DB_NAME)?sslmode=$(SSL_MODE) up
 	@echo "Database $(DB_NAME) migrated successfully."
-	@migrate -source file://$(MIGRATIONS_DIR) -database $(PROTOCOL)://$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(SSL_MODE) up
+	@migrate -source file://$(MIGRATIONS_DIR) -database $(DB_PROTOCOL)://$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(SSL_MODE) up
 
 db-connect:
 	@echo "Connecting to database $(DB_NAME)..."
@@ -46,21 +46,49 @@ db-reset: db-drop db-create db-migrate dump
 	@echo "Database $(DB_NAME) reset successfully."
 
 dump:
+	@echo "---=== DB Creds ===---"
+	@echo MIGRATIONS_DIR=$(MIGRATIONS_DIR)
+	@echo DB_PROTOCOL=$(DB_PROTOCOL)
+	@echo DB_USER=$(DB_USER)
+	@echo DB_HOST=$(DB_HOST)
+	@echo DB_PORT=$(DB_PORT)
+	@echo DB_NAME=$(DB_NAME)
+	@echo SSL_MODE=$(SSL_MODE)
 	@echo DB_CONNECTION_STRING=$(DB_CONNECTION_STRING)
-
-fresh-run: db-reset generate build dev-pretty 
+	@echo "---=== Server Settings ===---"
+	@echo SCHEME=$(SCHEME)
+	@echo HOST=$(HOST)
+	@echo PORT=$(PORT)
+	@echo "---=== Sender Settings ===---"
+	@echo SENDER_SCHEME=$(SENDER_SCHEME)
+	@echo SENDER_HOST=$(SENDER_HOST)
+	@echo SENDER_PORT=$(SENDER_PORT)
 
 generate:
 	@go generate
 
-dev: 
-	@air -c .air.toml
-
-dev-pretty: 
-	@make dev | humanlog -i
+test: 
+	@go test ./...
 
 serve:
 	@./$(BIN)/serve
 
 serve-pretty:
 	@make serve | humanlog -i
+
+send-dev:
+	@air -c cmd/send/.air.toml
+
+send-dev-pretty:
+	@make send-dev | humanlog -i
+
+fresh-run: db-reset generate build serve-pretty
+
+dev: 
+	@air -c .air.toml
+
+	
+dev-pretty: 
+	@make dev | humanlog -i
+
+dev-fresh: db-reset generate dev-pretty

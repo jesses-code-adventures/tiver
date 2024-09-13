@@ -10,25 +10,22 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jesses-code-adventures/tiver/model"
-	"github.com/joho/godotenv"
 )
 
 type Server struct {
 	Context *context.Context
+	Conn    *pgx.Conn
 	Logger  *slog.Logger
 	Mux     *http.ServeMux
 	Queries *model.Queries
 }
 
 func NewServer() (s Server) {
-	err := godotenv.Load(".env", ".env.secret")
-	if err != nil {
-		panic("no env file found")
-	}
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)
 	server := Server{
 		Context: nil,
+		Conn:    nil,
 		Logger:  logger,
 		Mux:     http.NewServeMux(),
 		Queries: nil,
@@ -46,6 +43,7 @@ func (s Server) ListenAndServe() (err error) {
 	queries := model.New(conn)
 	s.Queries = queries
 	s.Context = &ctx
+	s.Conn = conn
 	s.registerHandlers()
 	log.Print("successfully connected to db")
 	err = http.ListenAndServe(os.Getenv("PORT"), s.Mux)
